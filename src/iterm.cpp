@@ -111,7 +111,7 @@ void iterm(Preferences& prefs) {
             return;
         }
         else if (matches(input, 3, "v", "ver", "-version")) {
-            pl("make-font version: " << VERSION);
+            pl("cook-font version: " << VERSION);
         }
         else {
             inputToCommands(input, cmds);

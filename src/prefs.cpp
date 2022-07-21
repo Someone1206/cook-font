@@ -161,7 +161,7 @@ void Preferences::ParseArgs(const char** args, int len) {
             strcmp(arg, "--ver") == 0    ||
             strcmp(arg, "--version") == 0
         ) {
-            pl("make-font: convert font bitmaps to C Headers");
+            pl("cook-font: convert font bitmaps to C Headers");
             pl("Version: " << VERSION);
         }
         else if (

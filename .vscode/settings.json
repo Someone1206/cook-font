@@ -1,0 +1,7 @@
+{
+    "C_Cpp.default.includePath": [
+        "${default}",
+        "${workspaceFolder}/inc/"
+    ],
+    "C_Cpp.default.cppStandard": "c++20"
+}
