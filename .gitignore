@@ -2,3 +2,5 @@
 
 .vscode/*
 !.vscode/settings.json
+
+[Bb]in/

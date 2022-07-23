@@ -8,6 +8,15 @@ class Preferences
 {
 private:
     std::bitset<8> boolPreferences;
+    /*********
+     * 0 - instant quit
+     * 1 - -q, -Q - log suppress
+     * 2 - -p, -P - use cpu
+     * 3 - -d, -D - use font file comments
+     * 4 - -c, -C - use char info in comments
+     * *******/
+
+
     std::string inputFileName, outputFileName;
 
     std::string errors;
@@ -26,6 +35,14 @@ public:
     bool isCPU();
     void setUseCPU();
     void clearUseCPU();
+
+    bool isFontComments();
+    void setFontComments();
+    void clearFontComments();
+
+    bool isCharInfo();
+    void setCharInfo();
+    void clearCharInfo();
 
     std::string getInputFile();
     void setInputFile(std::string& fileName);

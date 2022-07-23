@@ -21,6 +21,10 @@ cook-font font.txt -o font.h
 |`-Q` OR `--no-quiet`| Show Logs. Negate the effects of `-q`|
 |`-p` OR `--cpu-i`|Generate Output which will be CPU/Processor Intensive to interpret and use.<br>**Not Yet Implemented**|
 |`-P` OR `--no-cpu-i`|Generate Output which will be memory intensive to use.<br>**Implemented and is the DEFAULT Output mode**|
+|`-d` OR `--font-desc`|to include the font comments after the "-"|
+|`-D` OR `--no-font-d`|to exclude the font comments after the "-"<br>**DEFULT**|
+|`-c` OR `--char-info`|to include information about character index in the output header file|
+|`-C` OR `--no-char-i`|to exclude information about character index in the output header file<br>**DEFAULT**|
 |**Any Other Arguement**|Is interpreted as the input file|
 
 

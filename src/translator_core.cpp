@@ -76,11 +76,18 @@ int translate_core(
                 return -1;
             }
             heightC = 0;
-            outfile << "\\\n\t/* " 
-                << line.substr(1) 
-                << " (done " 
-                << charCount 
-                << ") */ \\\n\t\\\n\t";
+
+            
+            // commenting system
+            outfile << "\\\n\t/* ";
+            if (prefs.isFontComments()) {
+                outfile << line.substr(1);
+            }
+            if (prefs.isCharInfo()) {
+                outfile << " (charater: " << charCount << ") ";
+            }
+            outfile << " */ \\\n\t\\\n\t";
+
             charCount++;
             byteCount = 0;
             continue;

@@ -91,6 +91,10 @@ void iterm(Preferences& prefs) {
             pl("  q, quiet       to suppress useless error logs");
             pl("  p, cpu, process");
             pl("                 to make the output more CPU/processor intensive");
+            pl("  ufd, use-font-desc");
+            pl("                 to use the font description in the font file");
+            pl("  c, chi, char-info");
+            pl("                 to use character index information in the header file");
             pl("  i, in, input   <input_file>");
             pl("                 the same as \"i\" command(s)");
             pl("  o, out, output <output_file>");
@@ -151,6 +155,12 @@ void iterm(Preferences& prefs) {
                         else if (matches(cmds[1], 3, "p", "cpu", "process")) {
                             prefs.setUseCPU();
                         }
+                        else if (matches(cmds[1], 2, "ufd", "use-font-desc")) {
+                            prefs.setFontComments();
+                        }
+                        else if(matches(cmds[1], 3, "c", "chi", "char-info")) {
+                            prefs.setCharInfo();
+                        }
                         else {
                         ___INVALID_ATTR:
                             pel("Error: Invalid Attribute specified!");
@@ -184,6 +194,12 @@ void iterm(Preferences& prefs) {
                         }
                         else if (matches(cmds[1], 3, "p", "cpu", "process")) {
                             prefs.clearUseCPU();
+                        }
+                        else if (matches(cmds[1], 2, "ufd", "use-font-desc")) {
+                            prefs.clearFontComments();
+                        }
+                        else if (matches(cmds[1], 3, "c", "chi", "char-info")) {
+                            prefs.clearCharInfo();
                         }
                         else {
                             goto ___INVALID_ATTR;
