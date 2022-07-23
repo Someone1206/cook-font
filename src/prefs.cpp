@@ -175,7 +175,8 @@ void Preferences::ParseArgs(const char** args, int len) {
 
         if (strcmp(arg, "-o") == 0)  {
             if ((i + 1) < len) {
-                setOutputFile(*(args + i + 1));
+                i++;
+                setOutputFile(*(args + i));
             } else {
                 __NOOUT:
                 pel("Error: No output file specified!");
