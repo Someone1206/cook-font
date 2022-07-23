@@ -86,3 +86,10 @@ font-8x6-psf1
 01100110
 - There will be many more glyphs
 ```
+
+## Tests & Examples
+The tests are stored in the [tests](./tests/) folder. The tests also act as examples to the files this program can currently read. They are arranged in sets of two, one having `.sfl` extension and the other having `.h` extension.  
+Command used:
+```
+cook-font <filename>.sfl -o <filename>.h -d -c
+```
