@@ -62,6 +62,10 @@ int translate_core(
             continue;
         }
         
+        if (line.back() == '\r') {
+            line = line.substr(0, line.length() - 1);
+        }
+        
         if (line.starts_with("-")) {
             if (heightC != fontHeight) {
                 ERR(
@@ -82,7 +86,9 @@ int translate_core(
             continue;
         }
 
+
         if (line.length() == fontWidth) {
+            _PROCESS_LINE:
             if (fontWidth <= 8) {
                 if (less8(outfile, fontWidth, line) == -1) {
                     ERR(

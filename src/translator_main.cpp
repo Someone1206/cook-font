@@ -72,7 +72,7 @@ void translate_main(Preferences& prefs) {
             goto ___LINE1_ERR;
         }
 
-        fontType = line.substr(line.find('-', xpos) + 1);
+        fontType = line.substr(0, line.find('-'));
     }
 
 
