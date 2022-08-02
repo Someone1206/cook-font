@@ -2,9 +2,9 @@
 
 #include <fio.hpp>
 
-#define ERR(pref, line, xtra) \
+#define _ERR(line, xtra) \
 {\
-    pel("Error: in file " << pref.getInputFile()); \
+    pel("Error: in file " << Prefs.getInputFile()); \
     pe("Line " << line << " : "); \
     xtra; \
 }

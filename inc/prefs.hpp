@@ -6,6 +6,13 @@
 
 class Preferences
 {
+public:
+    enum Format {
+        sfl,
+        zap_org_out,
+        raw_psf
+    };
+
 private:
     std::bitset<8> boolPreferences;
     /*********
@@ -21,8 +28,14 @@ private:
 
     std::string errors;
 
+    enum Format format;
+
 public:
     Preferences();
+    /************
+     * Public functions
+     * 
+     * *****/
 
     bool isInstaQuit();
     void setInstaQuit();
@@ -60,6 +73,8 @@ public:
     void addError(std::string errorMsg);
     void clearErrors();
 
+    void setFormat(enum Preferences::Format fmt);
+    enum Preferences::Format getFormat();
 
     void ParseArgs(const char** args, int len);
 
@@ -68,3 +83,6 @@ public:
 
     ~Preferences();
 };
+
+
+extern Preferences Prefs;

@@ -165,6 +165,18 @@ void Preferences::clearErrors() {
     errors.clear();
 }
 
+
+
+void Preferences::setFormat(enum Preferences::Format fmt) {
+    format = fmt;
+}
+
+enum Preferences::Format Preferences::getFormat() {
+    return format;
+}
+
+
+
 void Preferences::ParseArgs(const char** args, int len) {
     const char* arg;
     // constexpr int out_len = strlen("--output=");
@@ -272,3 +284,6 @@ void Preferences::ParseArgs(const char** args, int len) {
 Preferences::~Preferences()
 {
 }
+
+
+Preferences Prefs;

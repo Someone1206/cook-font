@@ -2,4 +2,4 @@
 #include <prefs.hpp>
 
 
-void iterm(Preferences& prefs);
+void iterm();

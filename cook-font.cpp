@@ -7,24 +7,27 @@
 
 #include <translator_main.hpp>
 
+#include <translator.hpp>
+
 int main(int argc, const char* argv[])
 {
-    Preferences prefs = Preferences();
+    Prefs = Preferences();
+
     if (argc == 1) {
-        iterm(prefs);
+        iterm();
     }
     else {
-        prefs.ParseArgs(argv, argc);
+        Prefs.ParseArgs(argv, argc);
     }
 
-    if (prefs.isInstaQuit()) {
-        if (prefs.getErrors() == "") {
+    if (Prefs.isInstaQuit()) {
+        if (Prefs.getErrors() == "") {
             return 0;
         }
         return 5;
     }
 
-    translate_main(prefs);
+    Translator::translate_main();
 
     return 0;
 }

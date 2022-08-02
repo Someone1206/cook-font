@@ -66,7 +66,7 @@ bool matches(std::string& var, int num, ...) {
 }
 
 
-void iterm(Preferences& prefs) {
+void iterm() {
     std::string input, prompt = std::filesystem::current_path().string();
 
     std::vector<std::string> cmds;
@@ -105,13 +105,13 @@ void iterm(Preferences& prefs) {
             pl("");
         }
         else if (matches(input, 2, "info", "reflect")) {
-            prefs.Reflect();
+            Prefs.Reflect();
         }
         else if (matches(input, 2, "r", "run")) {
             return;
         }
         else if (matches(input, 2, "q", "quit")) {
-            prefs.setInstaQuit();
+            Prefs.setInstaQuit();
             return;
         }
         else if (matches(input, 3, "v", "ver", "-version")) {
@@ -123,13 +123,13 @@ void iterm(Preferences& prefs) {
             if (matches(cmds[0], 3, "i", "in", "input")) {
             ___INPUTMGR:
                 for (auto& name : cmds) {
-                    prefs.setInputFile(name);
+                    Prefs.setInputFile(name);
                 }
             }
             else if (matches(cmds[0], 3, "o", "out", "output")) {
             ___OUTPUTMGR:
                 for (auto& name : cmds) {
-                    prefs.setOutputFile(name);
+                    Prefs.setOutputFile(name);
                 }
             }
             else if (matches(cmds[0], 2, "s", "set")) {
@@ -150,16 +150,16 @@ void iterm(Preferences& prefs) {
                             goto ___INVALID_ATTR;
                         }
                         if (matches(cmds[1], 2, "q", "quiet")) {
-                            prefs.setLogSuppress();
+                            Prefs.setLogSuppress();
                         }
                         else if (matches(cmds[1], 3, "p", "cpu", "process")) {
-                            prefs.setUseCPU();
+                            Prefs.setUseCPU();
                         }
                         else if (matches(cmds[1], 2, "ufd", "use-font-desc")) {
-                            prefs.setFontComments();
+                            Prefs.setFontComments();
                         }
                         else if(matches(cmds[1], 3, "c", "chi", "char-info")) {
-                            prefs.setCharInfo();
+                            Prefs.setCharInfo();
                         }
                         else {
                         ___INVALID_ATTR:
@@ -177,29 +177,29 @@ void iterm(Preferences& prefs) {
                         if (cmds.size() > 2) {
                             pl("Warning: will erase input file.");
                         }
-                        prefs.clearInputFile();
+                        Prefs.clearInputFile();
                     }
                     else if (matches(cmds[1], 3, "o", "out", "output")) {
                         if (cmds.size() > 2) {
                             pl("Warning: will erase output file.");
                         }
-                        prefs.clearOutputFile();
+                        Prefs.clearOutputFile();
                     }
                     else {
                         if (cmds.size() > 2) {
                             goto ___INVALID_ATTR;
                         }
                         if (matches(cmds[1], 2, "q", "quiet")) {
-                            prefs.clearLogSuppress();
+                            Prefs.clearLogSuppress();
                         }
                         else if (matches(cmds[1], 3, "p", "cpu", "process")) {
-                            prefs.clearUseCPU();
+                            Prefs.clearUseCPU();
                         }
                         else if (matches(cmds[1], 2, "ufd", "use-font-desc")) {
-                            prefs.clearFontComments();
+                            Prefs.clearFontComments();
                         }
                         else if (matches(cmds[1], 3, "c", "chi", "char-info")) {
-                            prefs.clearCharInfo();
+                            Prefs.clearCharInfo();
                         }
                         else {
                             goto ___INVALID_ATTR;

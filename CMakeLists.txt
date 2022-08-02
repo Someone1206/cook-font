@@ -11,6 +11,7 @@ set(INC_DIR inc)
 
 file(GLOB CF_SRCS
     "${SRCD}/*.cpp"
+    "${SRCD}/translator/*.cpp"
 )
 
 include_directories(AFTER ${INC_DIR})

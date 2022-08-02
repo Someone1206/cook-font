@@ -1,13 +1,15 @@
-#ifndef ___FONT_8X18_PSF1
-#define ___FONT_8X18_PSF1
+#ifndef ____FONT_8X18_PSF1
+#define ____FONT_8X18_PSF1
 
 
-#define _FONT_8X18_HEIGHT        18
+#define TYPE_PSF1_8X18      5
 
-#define _FONT_8X18_WIDTH         8
+#define FONT_PSF1_8X18_HEIGHT        18
+
+#define FONT_PSF1_8X18_WIDTH         8
 
 
-#define DECL_FONT_8X18_    \
+#define DECL_PSF1_8X18    \
 {\
 	0x00, 0x00, 0x00, 0x00, 0x3e, 0x63, 0x5d, 0x7d,   \
 	0x7b, 0x77, 0x77, 0x7f, 0x77, 0x3e, 0x00, 0x00,   \
