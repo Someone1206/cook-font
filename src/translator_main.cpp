@@ -34,12 +34,7 @@ void Translator::translate_main() {
         return;
     }
 
-    // 
-
-    Translator::inputFile.open(Prefs.getInputFile());
     Translator::outputFile.open(Prefs.getOutputFile());
-
-    pl("Here!");
 
     if (
         std::filesystem::path(Prefs.getInputFile())
@@ -59,6 +54,7 @@ void Translator::translate_main() {
         .extension() == ".psf"
     ) {
         Prefs.setFormat(Preferences::Format::raw_psf);
+        Translator::rawpsf();
     }
     else {
         pel("Unrecognized input format!");

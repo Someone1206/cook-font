@@ -2,4 +2,4 @@
 
 #define ___str(a) #a
 
-#define VERSION ___str(1.2.2)
+#define VERSION ___str(2.0.0)
