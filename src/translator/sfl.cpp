@@ -19,6 +19,7 @@ int cless8(uint32_t font_width, std::string& line);
 int Translator::sfl() {
     //
     Translator::outputFile.open(Prefs.getOutputFile());
+    Translator::inputFile.open(Prefs.getInputFile());
 
 
     std::string line, tmp, fontType;

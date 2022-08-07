@@ -34,7 +34,7 @@ cook-font font.txt -o font.h
 * [inc/fio.hpp](./inc/fio.hpp) has some basic IO macros.
 * [inc/version](./inc/version) stores the version.
 * [inc/errMgr.hpp](./inc/errMgr.hpp) has the macro for error handling.
-* [src/translator_core.cpp](./src/translator_core.cpp) has the core translation unit.
+* [src/translator](./src/translator) has the core translation unit.
 * [src/translator_main.cpp](./src/translator_main.cpp) has the font identification, macro creation units and calls translate_core internally.
 
 
@@ -88,8 +88,4 @@ font-8x6-psf1
 ```
 
 ## Tests & Examples
-The tests are stored in the [tests](./tests/) folder. The tests also act as examples to the files this program can currently read. They are arranged in sets of two, one having `.sfl` extension and the other having `.h` extension.  
-Command used:
-```
-cook-font <filename>.sfl -o <filename>.h -d -c
-```
+The tests are provided with the release as compressed files.

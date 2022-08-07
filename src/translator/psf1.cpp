@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 #include <iomanip>
+#include <codecvt>
 
 #define PSF1_FONT_WIDTH      8
 
@@ -54,9 +55,9 @@ int Translator::read_psf1(uint16_t font_mode, uint16_t font_height) {
 
         definedMacros.push_back(tmp);
 
-        tmp = "TYPE_PSF1_8X18     0";
+        tmp = "TYPE_PSF1_8X18";
         definedMacros.push_back(tmp);
-        tmp = "PSF1_SIGNATURE     0x3604";
+        tmp = "PSF1_SIGNATURE";
         definedMacros.push_back(tmp);
 
         tmp = "PSF1_8X" +
@@ -103,8 +104,11 @@ int Translator::read_psf1(uint16_t font_mode, uint16_t font_height) {
 
 
     char* fontBuffer, * unicodeBuffer = nullptr;
-    uint64_t fontBufferLen = font_height * glyph_count, unicodeBufferLen;
+    uint64_t fontBufferLen = font_height * glyph_count, unicodeBufferLen, unicodeBufferRead;
     fontBuffer = new char[fontBufferLen];
+    std::vector<std::wstring> mappings;
+    mappings.reserve(glyph_count);
+
     Translator::inputFile.read(fontBuffer, fontBufferLen);
 
     uint64_t readB = Translator::inputFile.gcount();
@@ -117,13 +121,103 @@ int Translator::read_psf1(uint16_t font_mode, uint16_t font_height) {
     if (has_unicode) {
         //  TODO:
         // implement this letaa...
+        unicodeBufferRead = Translator::inputFile.tellg();
+        Translator::inputFile.seekg(
+            unicodeBufferRead,
+            Translator::inputFile.end
+        );
+        unicodeBufferLen = (uint64_t)Translator::inputFile.tellg() - unicodeBufferRead;
+        unicodeBuffer = new char[unicodeBufferLen];
+
+
+        Translator::inputFile.seekg(
+            unicodeBufferRead,
+            Translator::inputFile.beg
+        );
+        Translator::inputFile.read(unicodeBuffer, unicodeBufferLen);
+
+        unicodeBufferRead = Translator::inputFile.gcount();
+        uint16_t val = 0, uniVal;
+
+        std::wstring tmpStr;
+
+        uint32_t i = 0;
+        bool state;
+
+        for (uint32_t j = 0; j < glyph_count; j++) {
+            state = true;
+
+            while (true) {
+                val = (uint8_t)(unicodeBuffer[i++]) + (unicodeBuffer[i++] << 8); // little endian
+                if (val == 0xffff) {
+                    break;
+                }
+                else if (val == 0xfffe) {
+                    if (has_unicode_seq) {
+                        state = true;
+                    }
+                    else {
+                        pel(
+                            "Error: Illegal start of Unicode"
+                            << " sequence in glyph "
+                            << i
+                        );
+                        return -0x800;
+                    }
+                }
+                else {
+                    // val has start of utf16 char
+                    if (
+                        (val <= 0xd7ff && val >= 0) ||
+                        (val <= 0xfffd && val >= 0xe000)
+                    ) {
+                        // bmp char, no more bytes need to be read
+                        uniVal = val;
+                    }
+                    else if (val <= 0xdbff && val >= 0xd800) {
+                        // high surrogate char, never encountered
+                        uniVal = (uint16_t)(
+                            0x010000 + (val + 0x03ff) << 10
+                        );
+                        uint16_t tmpVal = (uint8_t)(unicodeBuffer[i++]) + (unicodeBuffer[i++] << 8);
+                        if (0xdc00 <= tmpVal && tmpVal <= 0xdfff) {
+                            uniVal += tmpVal & 0x03ff;
+                        }
+                        else {
+                            pel("Error: missing low surrogate char");
+                            return -0x800;
+                        }
+                    }
+                    else if (0xdc00 <= val && val <= 0xdfff) {
+                        pel("Illegal low surrogate char");
+                        return -0x800;
+                    }
+                    else {
+                        pel("Illegal char in glyph");
+                        return -0x800;
+                    }
+
+
+                    if (state) {
+                        state = false;
+                        tmpStr = uniVal;
+                        mappings.push_back(tmpStr);
+                    }
+                    else {
+                        tmpStr = uniVal;
+                        mappings[mappings.size() - 1] += L" " + tmpStr;
+                    }
+                }
+            }
+        }
     }
 
     Translator::outputFile << std::hex << std::setw(2) << std::setfill('0');
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 
     for (uint32_t i = 0; i < glyph_count; i++) {
         for (uint32_t j = 0; j < font_height; j++) {
-            Translator::outputFile << "0x"
+            Translator::outputFile << "0x" << std::setw(2)
                 << (uint32_t)((uint8_t)fontBuffer[(i * font_height) + j]) << ", ";
 
             if ((j + 1) % 8 == 0) {
@@ -133,13 +227,19 @@ int Translator::read_psf1(uint16_t font_mode, uint16_t font_height) {
 
         Translator::outputFile << "\\\n\t/* ";
 
+        if (Prefs.isFontComments() && has_unicode) {
+            Translator::outputFile << " \\\n\t\tEquivalent Unicode characters: "
+                << conv.to_bytes(mappings[i]) << " \\\n\t\t";
+        }
+
         if (Prefs.isCharInfo()) {
             Translator::outputFile << "(Character Index: "
                 << std::dec << i
-                << " (0x" << std::hex << i << ")";
+                << " (0x" << std::hex << i << ")) \\\n\t";
         }
 
-        Translator::outputFile << " */\\\n\t";
+
+        Translator::outputFile << " */ \\\n\t";
 
     }
 
