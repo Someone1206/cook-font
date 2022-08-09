@@ -17,6 +17,8 @@ int Translator::read_psf1(uint16_t font_mode, uint16_t font_height) {
     //
     // hope that buffer is verified properly
 
+    Translator::outputFile.open(Prefs.getOutputFile());
+
     uint16_t length = font_height * PSF1_FONT_WIDTH;
     bool has_unicode = (font_mode & 0x02) != 0,
         has_unicode_seq = (font_mode & 0x04) != 0;
@@ -76,7 +78,7 @@ int Translator::read_psf1(uint16_t font_mode, uint16_t font_height) {
             << "\n\n\n#define " << definedMacros[1] << "     0"
             << "\n\n#define " << definedMacros[2]   << "     0x3604"
             << "\n\n#define " << definedMacros[3]   << "     " << std::to_string(font_height)
-            << "\n\n#define " << definedMacros[4]   << "     " << std::to_string(PSF1_FONT_WIDTH)
+            << "\n\n#define " << definedMacros[4]   << "      " << std::to_string(PSF1_FONT_WIDTH)
             << "\n\n#define " << definedMacros[5]
             << "   \\\n{\\\n\t";
 
@@ -228,8 +230,14 @@ int Translator::read_psf1(uint16_t font_mode, uint16_t font_height) {
         Translator::outputFile << "\\\n\t/* ";
 
         if (Prefs.isFontComments() && has_unicode) {
-            Translator::outputFile << " \\\n\t\tEquivalent Unicode characters: "
-                << conv.to_bytes(mappings[i]) << " \\\n\t\t";
+
+            if (mappings[i].length() > 1) {
+                Translator::outputFile << " \\\n\t\tEquivalent Unicode characters: ";
+            }
+            else {
+                Translator::outputFile << " \\\n\t\tEquivalent Unicode character: ";
+            }
+            Translator::outputFile << conv.to_bytes(mappings[i]) << " \\\n\t\t";
         }
 
         if (Prefs.isCharInfo()) {

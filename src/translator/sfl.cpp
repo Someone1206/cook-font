@@ -70,74 +70,52 @@ int Translator::sfl() {
     {
         // write macros to file
         std::vector<std::string> definedMacros;
-        definedMacros.reserve(5);
+        definedMacros.reserve(6);
 
-        line = "____" + std::regex_replace(line, std::regex("-"), "_");
+        // line = "____" + std::regex_replace(line, std::regex("-"), "_");
+        line = "____" + fontType + "_" + std::to_string(font_width) + "x"
+            + std::to_string(font_height) + "_";
         std::transform(line.begin(), line.end(), line.begin(), ::toupper);
 
         definedMacros.push_back(line);
 
-
-        Translator::outputFile << "#ifndef " << line << "\n";
-        Translator::outputFile << "#define " << line << "\n\n\n";
-
-        line = "type_" + fontType + "_" + 
-            std::to_string(font_width) + "x" + std::to_string(font_height);
-
-        std::transform(
-            line.begin(), line.end(),
-            line.begin(), ::toupper
-        );
+        line = "TYPE_PSF1_8X18";
         definedMacros.push_back(line);
-        Translator::outputFile << "#define " << line <<
-            "      ";
 
-        if (!Prefs.isCPU()) {
-            Translator::outputFile << 5;
+        line = "PSF1_SIGNATURE";
+        definedMacros.push_back(line);
+
+        line = fontType + "_" + std::to_string(font_width) + "x"
+            + std::to_string(font_height) + "_height";
+        std::transform(line.begin(), line.end(), line.begin(), ::toupper);
+        definedMacros.push_back(line);
+
+        line = fontType + "_" + std::to_string(font_width) + "x"
+            + std::to_string(font_height) + "_width";
+        std::transform(line.begin(), line.end(), line.begin(), ::toupper);
+        definedMacros.push_back(line);
+
+        line = "decl_" + fontType + "_" + std::to_string(font_width)
+            + "x" + std::to_string(font_height);
+        std::transform(line.begin(), line.end(), line.begin(), ::toupper);
+        definedMacros.push_back(line);
+
+
+        if (fontType == "psf1") {
+            line = "     0x3604";
+        } else {
+            line = "";
         }
-        else {
-            Translator::outputFile << 0;
-        }
-
-        Translator::outputFile << "\n\n";
-
-        line = "font_" + fontType + "_" + 
-            std::to_string(font_width) + "x" + 
-            std::to_string(font_height);
-        tmp = line + "_width";
-        line.append("_height");
-
-        std::transform(
-            line.begin(), line.end(), 
-            line.begin(), ::toupper
-        );
-        std::transform(
-            tmp.begin(), tmp.end(), 
-            tmp.begin(), ::toupper
-        );
-
-        definedMacros.push_back(line);
-        definedMacros.push_back(tmp);
-
-        Translator::outputFile << "#define " << line <<
-            "        " << font_height << "\n\n";
-        Translator::outputFile << "#define " << tmp <<
-            "         " << font_width << "\n\n\n";
 
 
-        line = "decl_" + fontType + "_" + 
-            std::to_string(font_width) + "x" + 
-            std::to_string(font_height);
-        std::transform(
-            line.begin(), line.end(), 
-            line.begin(), ::toupper
-        );
-        definedMacros.push_back(line);
-
-        Translator::outputFile << "#define " << line <<
-            "    \\\n{\\\n\t";
-
-
+        Translator::outputFile << "#ifndef " << definedMacros[0]
+            << "\n#define " << definedMacros[0]
+            << "\n\n\n#define " << definedMacros[1] << "     0"
+            << "\n\n#define " << definedMacros[2]   << line
+            << "\n\n#define " << definedMacros[3]   << "     " << std::to_string(font_height)
+            << "\n\n#define " << definedMacros[4]   << "      " << std::to_string(font_width)
+            << "\n\n#define " << definedMacros[5]
+            << "   \\\n{\\\n\t";
 
 
         if (!Prefs.isLogSuppressed()) {

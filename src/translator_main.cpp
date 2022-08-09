@@ -34,7 +34,7 @@ void Translator::translate_main() {
         return;
     }
 
-    Translator::outputFile.open(Prefs.getOutputFile());
+    // Translator::outputFile.open(Prefs.getOutputFile());
 
     if (
         std::filesystem::path(Prefs.getInputFile())
